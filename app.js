@@ -2,9 +2,22 @@ const express = require("express")
 const app = express()
 const { products, people } = require("./data")
 const logger = require("./logger") //middleware import
+const auth = require("./auth") //middleware import
+
+// middleware works
+// req => middleware => res
 
 // for using middleware in all routes
-app.use(logger)
+// app.use(logger)
+
+// this will middleware apply to all routes starts with api
+// app.use("/api", logger)
+
+// applied 2 middleware on routes
+// middleware always execute in given order/
+// here middle ware works like (req => middleware => middleware => res)
+app.use([logger, auth])
+
 
 app.get("/", (req, res) => {
     res.status(200).json(products)
