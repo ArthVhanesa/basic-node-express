@@ -1,13 +1,7 @@
 const express = require("express")
 const app = express()
 const { products, people } = require("./data")
-
-const logger = (req, res, next) => {
-    const method = req.method;
-    const url = req.url;
-    console.log(method, url)
-    next()
-}
+const logger = require("./logger")
 
 app.get("/", logger, (req, res) => {
     res.status(200).json(products)
