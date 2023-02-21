@@ -2,11 +2,18 @@ const express = require("express")
 const app = express()
 const { products, people } = require("./data")
 
-app.get("/", (req, res) => {
+const logger = (req, res, next) => {
+    const method = req.method;
+    const url = req.url;
+    console.log(method, url)
+    next()
+}
+
+app.get("/", logger, (req, res) => {
     res.status(200).json(products)
 })
 
-app.get("/api/v1/products", (req, res) => {
+app.get("/api/v1/products", logger, (req, res) => {
     const newProduct = products.map((product) => {
         const { id, name, image } = product;
         return ({ id, name, image })
@@ -48,11 +55,11 @@ app.get("/api/v1/query", (req, res) => {
     if (limit) {
         sortedProduct = sortedProduct.slice(0, Number(limit))
     }
-    
+
     if (sortedProduct.length < 1) {
-       return res.status(200).json({success: "true", data: []})
+        return res.status(200).json({ success: "true", data: [] })
     }
-    res.json({success: "true", data: sortedProduct})
+    res.json({ success: "true", data: sortedProduct })
 })
 
 app.all("*", (req, res) => {
