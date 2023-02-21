@@ -18,6 +18,8 @@ const auth = require("./auth") //middleware import
 // here middle ware works like (req => middleware => middleware => res)
 app.use([logger, auth])
 
+// for parse the body
+app.use(express.urlencoded({ extended: false }))
 
 app.get("/", (req, res) => {
     res.status(200).json(products)
@@ -70,6 +72,15 @@ app.get("/api/v1/query", (req, res) => {
         return res.status(200).json({ success: "true", data: [] })
     }
     res.json({ success: "true", data: sortedProduct })
+})
+
+app.post("/", (req, res) => {
+    console.log(req.body)
+
+    const { name } = req.body;
+
+    res.status(200).json({ success: name })
+
 })
 
 app.all("*", (req, res) => {
