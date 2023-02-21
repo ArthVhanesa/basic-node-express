@@ -1,13 +1,16 @@
 const express = require("express")
 const app = express()
 const { products, people } = require("./data")
-const logger = require("./logger")
+const logger = require("./logger") //middleware import
 
-app.get("/", logger, (req, res) => {
+// for using middleware in all routes
+app.use(logger)
+
+app.get("/", (req, res) => {
     res.status(200).json(products)
 })
 
-app.get("/api/v1/products", logger, (req, res) => {
+app.get("/api/v1/products", (req, res) => {
     const newProduct = products.map((product) => {
         const { id, name, image } = product;
         return ({ id, name, image })
